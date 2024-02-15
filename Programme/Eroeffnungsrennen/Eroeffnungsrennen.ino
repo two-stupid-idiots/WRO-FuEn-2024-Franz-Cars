@@ -109,6 +109,8 @@ void testServo() {
   delay(1000);
 }
 
+void(* resetFunc) (void) = 0;
+
 void setup() {
   initSerial();
   initGPIO();
@@ -116,5 +118,5 @@ void setup() {
 }
 
 void loop() {
-  
+
 }
