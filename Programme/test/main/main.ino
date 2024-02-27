@@ -1,11 +1,11 @@
-#include <Wire.h>
 #include <Servo.h>
-
-#define MPU_ADDRESS 0x68
-int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 
 #define SERVO_PIN 8
 Servo servo;
+
+#define MOTOR_ENL_PIN 9
+#define MOTOR_OUT1_PIN 10
+#define MOTOR_OUT2_PIN 11
 
 #define LEFT_TRIG_PIN 3
 #define LEFT_ECHO_PIN 2
@@ -22,37 +22,34 @@ enum side {
   right
 };
 
+enum logLevel {
+  fatal,
+  error,
+  warn,
+  info,
+  debug,
+  trace
+};
+
+logLevel logLevel;
+
 void initSerial() {
   Serial.begin(9600);
   while(!Serial);
-  Serial.println("----Start Test----");
-}
-
-void initMPU() {
-  Wire.begin();
-
-  Wire.beginTransmission(MPU_ADDRESS);        
-  Wire.write(0x6B); 
-  Wire.write(0x00);
-  Wire.endTransmission(true);
-
-  Wire.beginTransmission(MPU_ADDRESS);          
-  Wire.write(0x6B);
-  Wire.write(0x00);
-  Wire.endTransmission(true);
-
-  Wire.beginTransmission(MPU_ADDRESS);
-  Wire.write(0x1B);
-  Wire.write(0x10);
-  Wire.endTransmission(true);
+  Serial.println();
+  Serial.println("----test----");
 }
 
 void initServo() {
   servo.attach(SERVO_PIN);
-  servo.write(90);
+  setServo(90);
 }
 
 void initGPIO() {
+  pinMode(MOTOR_ENL_PIN, OUTPUT);
+  pinMode(MOTOR_OUT1_PIN, OUTPUT);
+  pinMode(MOTOR_OUT2_PIN, OUTPUT);
+
   pinMode(LEFT_TRIG_PIN, OUTPUT);
   pinMode(LEFT_ECHO_PIN, INPUT);
 
@@ -65,16 +62,32 @@ void initGPIO() {
 
 void setServo(int angle) {
   servo.write(angle);
-  Serial.println("Set servo to " + String(angle));
+  if (logLevel >= info) {
+    Serial.println("[INFO]  set servo to " + String(angle) + "°");
+  }
 }
 
-void testServo() {
-  setServo(0);
-  delay(1000);
-  setServo(90);
-  delay(1000);
-  setServo(180);
-  delay(1000);
+void runMotor(int speed) {
+  if (speed >= 0) {
+    digitalWrite(MOTOR_OUT1_PIN, HIGH);
+    digitalWrite(MOTOR_OUT2_PIN, LOW);
+  }
+
+  if (speed < 0) {
+    digitalWrite(MOTOR_OUT1_PIN, LOW);
+    digitalWrite(MOTOR_OUT2_PIN, HIGH);
+  }
+
+  if (speed >= -100 && speed <= 100) {
+    analogWrite(MOTOR_ENL_PIN, int(abs(speed)*2.55));
+    if (logLevel >= info) {
+      Serial.println("[INFO]  set motor speed to " + String(speed));
+    }
+  } else {
+    if (logLevel >= error) {
+      Serial.println("[ERROR] speed is outside the defined range and could not be set");
+    }
+  }
 }
 
 int getUltrasonicData(int TRIG_PIN, int ECHO_PIN) {
@@ -90,51 +103,87 @@ int getUltrasonicData(int TRIG_PIN, int ECHO_PIN) {
   return i;
 }
 
-void getDistance(side side) {
+int getDistance(side side) {
   int distance;
   switch (side) {
     case left:
       distance = getUltrasonicData(LEFT_TRIG_PIN, LEFT_ECHO_PIN);
-      Serial.println("Left distance: " + String(distance) + "cm");
-      break;
+      if (logLevel >= debug) {
+        Serial.println("[DEBUG] left distance: " + String(distance) + "cm");
+      }
+      return distance;
     case front:
       distance = getUltrasonicData(FRONT_TRIG_PIN, FRONT_ECHO_PIN);
-      Serial.println("Front distance: " + String(distance) + "cm");
-      break;
+      if (logLevel >= debug) {
+        Serial.println("[DEBUG] front distance: " + String(distance) + "cm");
+      }
+      return distance;
     case right:
       distance = getUltrasonicData(RIGHT_TRIG_PIN, RIGHT_ECHO_PIN);
-      Serial.println("Right distance: " + String(distance) + "cm");
-      break;
+      if (logLevel >= debug) {
+        Serial.println("[DEBUG] right distance: " + String(distance) + "cm");
+      }
+      return distance;
   }
 }
 
-void getLeftDistance() {
-  getDistance(left);
-}
-
-void getFrontDistance() {
-  getDistance(front);
-}
-
-void getRightDistance() {
-  getDistance(right);
-}
-
 void testUltrasonicSensor() {
-  getLeftDistance();
-  getFrontDistance();
-  getRightDistance();
+  logLevel = debug;
+  getDistance(left);
+  getDistance(front);
+  getDistance(right);
   delay(1000);
-  Serial.println("--------");
+  if (logLevel >= debug) {
+    Serial.println("--------");
+  }
 }
+
+void testServo() {
+  logLevel = debug;
+  for (int i = 0; i <= 180; i += 10) {
+    setServo(i);
+    delay(500);
+  }
+  delay(1000);
+  for (int i = 170; i >= 0; i -= 10) {
+    setServo(i);
+    delay(500);
+  }
+  delay(1000);
+  if (logLevel >= debug) {
+    Serial.println("--------");
+  }
+}
+
+void testMotor() {
+  logLevel = debug;
+  for (int i = 0; i <= 100; i += 25) {
+    runMotor(i);
+    delay(1000);
+  }
+  for (int i = 75; i >= -100; i -= 25) {
+    runMotor(i);
+    delay(1000);
+  }
+  for (int i = -75; i <= 0; i += 25) {
+    runMotor(i);
+    delay(1000);
+  }
+  if (logLevel >= debug) {
+    Serial.println("--------");
+  }
+}
+
+void(* resetFunc) (void) = 0;
 
 void setup() {
+  logLevel = info;
   initSerial();
-  initMPU();
   initGPIO();
   initServo();
+  Serial.println("----start loop----");
 }
 
 void loop() {
-
+  
 }
