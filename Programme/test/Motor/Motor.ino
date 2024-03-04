@@ -1,35 +1,44 @@
-#define ENL 9
-#define IN1 8
-#define IN2 7
+#define ENL1 9
+#define IN11 10
+#define IN12 11
 
+#define ENL2 6
+#define IN21 7
+#define IN22 8
 
 void initSerial() {
   Serial.begin(9600);
   while(!Serial);
+  Serial.println();
   Serial.println("----Motor----");
 }
 
 void initGPIO() {
-  pinMode(ENL, OUTPUT);
-  pinMode(IN1, INPUT);
-  pinMode(IN2, INPUT);
+  pinMode(ENL1, OUTPUT);
+  pinMode(IN11, OUTPUT);
+  pinMode(IN12, OUTPUT);
+
+  pinMode(ENL2, OUTPUT);
+  pinMode(IN21, OUTPUT);
+  pinMode(IN22, OUTPUT);
+
+  digitalWrite(ENL2, LOW);
 }
 
 //speed must be between -100 and 100
 void runMotor(int speed) {
-  analogWrite(ENL, int(abs(speed)*2.55));
+  Serial.println("test");
+  analogWrite(ENL2, int(abs(speed)*2.55));
 
   if (speed >= 0) {
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
+    digitalWrite(IN21, HIGH);
+    digitalWrite(IN22, LOW);
   }
 
   if (speed < 0) {
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
+    digitalWrite(IN21, LOW);
+    digitalWrite(IN22, HIGH);
   }
-
-  
 }
 
 void test() {
@@ -46,5 +55,5 @@ void setup() {
 }
 
 void loop() {
-
+  //test();
 }
