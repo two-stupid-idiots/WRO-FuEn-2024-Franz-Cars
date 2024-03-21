@@ -1,30 +1,48 @@
-#include <Servo.h>
-#define Servo_Pin 8
+#define ENL  9
+#define IN1 10
+#define IN2 11
 
-Servo servo;
+void initSerial() {
+  Serial.begin(9600);
+  while(!Serial);
+  Serial.println();
+  Serial.println("----Servo----");
+}
+
+void initGPIO() {
+  pinMode(ENL, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+
+  digitalWrite(ENL, LOW);
+}
+
+//angle must be between -100 and 100
+void setServo(int angle) {
+  analogWrite(ENL, int(abs(angle)*2.55));
+
+  if (angle >= 0) {
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+  }
+
+  if (angle < 0) {
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+  }
+}
 
 void test() {
-  for (int i = 0; i <= 180; i += 10) {
-    servo.write(i);
-    Serial.println("Position: "+ String(i));
-    //delay(1000);
-  }
-  delay(1000);
-  for (int i = 180; i >= 0; i -= 10) {
-    servo.write(i);
-    Serial.println("Position: "+ String(i));
-    //delay(1000);
-  }
-  delay(1000);
+  setServo(75);
+  delay(3000);
+  setServo(-75);
+  delay(3000);
 }
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println("----Servo----");
-  servo.attach(Servo_Pin);
-  servo.write(90);
-  Serial.println("Position: 90");
-  delay(5000);
+  initSerial();
+  initGPIO();
+  setServo(0);
 }
 
 void loop() {
