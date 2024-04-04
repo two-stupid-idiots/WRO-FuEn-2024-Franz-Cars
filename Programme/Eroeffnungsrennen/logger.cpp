@@ -10,28 +10,43 @@ LogLevel Logger::getLevel(void) {
 }
 
 void Logger::debug(const char* message) {
-  Serial.print("[DEBUG] ");
-  Serial.println(message);
+  if (level <= LogLevel::DEBUG)
+  {
+    Serial.print("[DEBUG] ");
+    Serial.println(message);
+  }
 }
 
 void Logger::info(const char* message) {
-  Serial.print("[INFO]  ");
-  Serial.println(message);
+  if (level <= LogLevel::INFO)
+  {
+    Serial.print("[INFO]  ");
+    Serial.println(message);
+  }
 }
 
 void Logger::warn(const char* message) {
-  Serial.print("[WARN]  ");
-  Serial.println(message);
+  if (level <= LogLevel::WARN)
+  {
+    Serial.print("[WARN]  ");
+    Serial.println(message);
+  }
 }
 
 void Logger::error(const char* message) {
-  Serial.print("[Error] ");
-  Serial.println(message);
+  if (level <= LogLevel::ERROR)
+  {
+    Serial.print("[ERROR] ");
+    Serial.println(message);
+  }
 }
 
 void Logger::fatal(const char* message) {
-  Serial.print("[FATAL] ");
-  Serial.println(message);
+  if (level <= LogLevel::FATAL)
+  {
+    Serial.print("[FATAL] ");
+    Serial.println(message);
+  }
 }
 
 Logger logger;

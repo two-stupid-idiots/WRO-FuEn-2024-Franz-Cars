@@ -18,15 +18,15 @@ int UltraschallSensor::getDistance(side side) {
   switch (side) {
     case side::left:
       distance = getUltrasonicData(LEFT_TRIG_PIN, LEFT_ECHO_PIN);
-      logger.info(("[ULTRA] left distance: " + String(distance) + "cm").c_str());
+      logger.debug(("[ULTRA] left distance: " + String(distance) + "cm").c_str());
       return distance;
     case side::front:
       distance = getUltrasonicData(FRONT_TRIG_PIN, FRONT_ECHO_PIN);
-      logger.info(("[ULTRA] front distance: " + String(distance) + "cm").c_str());
+      logger.debug(("[ULTRA] front distance: " + String(distance) + "cm").c_str());
       return distance;
     case side::right:
       distance = getUltrasonicData(RIGHT_TRIG_PIN, RIGHT_ECHO_PIN);
-      logger.info(("[ULTRA] right distance: " + String(distance) + "cm").c_str());
+      logger.debug(("[ULTRA] right distance: " + String(distance) + "cm").c_str());
       return distance;
   }
 }

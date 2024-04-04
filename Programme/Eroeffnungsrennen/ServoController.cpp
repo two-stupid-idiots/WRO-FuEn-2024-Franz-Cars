@@ -28,21 +28,18 @@ void ServoController::set(int value) {
 }
 
 void ServoController::test(void) {
-    LogLevel level = logger.getLevel();
-    logger.setLevel(LogLevel::DEBUG);
+  LogLevel level = logger.getLevel();
+  logger.setLevel(LogLevel::DEBUG);
   for (int i = 0; i <= 98; i += 14) {
     set(i);
-    logger.debug(("[Servo] Value " + String(i) + "%").c_str());
     delay(1000);
   }
-  for (int i = 98; i <= -98; i += -14) {
+  for (int i = 98; i >= -98; i += -14) {
     set(i);
-    logger.debug(("[Servo] Value " + String(i) + "%").c_str());
     delay(1000);
   }
   for (int i = -98; i <= 0; i += 14) {
     set(i);
-    logger.debug(("[Servo] Value " + String(i) + "%").c_str());
     delay(1000);
   }
   logger.debug("--------");

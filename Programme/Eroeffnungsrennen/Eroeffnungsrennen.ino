@@ -20,13 +20,15 @@ void wait() {
 }
 
 void run() {
-  while (ir.getDistance(side::front) < ir.getDistance(side::left) || ir.getDistance(side::front) < ir.getDistance(side::right)) {
-    motor.run(100);
+  while (ir.getDistance(side::front) > ir.getDistance(side::left) && ir.getDistance(side::front) > ir.getDistance(side::right)) {
+    motor.run(75);
     if (ir.getDistance(side::left) < ir.getDistance(side::right)) {
       //steer right
+      servo.set(-42);
     }
     if (ir.getDistance(side::right) < ir.getDistance(side::left)) {
       //steer left
+      servo.set(42);
     }
   }
   
@@ -40,13 +42,13 @@ void run() {
 
 void setup() {
   initSerial();
-  logger.setLevel(LogLevel::INFO);
+  logger.setLevel(LogLevel::DEBUG);
   motor.init();
   servo.init();
   ir.init();
-  wait();
+  servo.set(0);
 }
 
 void loop() {
-  run();
+  
 }
