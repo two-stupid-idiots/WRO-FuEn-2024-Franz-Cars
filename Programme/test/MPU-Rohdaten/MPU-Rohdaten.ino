@@ -14,7 +14,7 @@ void setup() {
 
   Serial.begin(9600);
   Serial.println("----I2C----");
-  Serial.println(error);
+  //Serial.println(error);
   delay(2000);
 }
 

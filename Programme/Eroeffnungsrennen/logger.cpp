@@ -1,5 +1,4 @@
 #include "Logger.h"
-#include <Arduino.h>
 
 void Logger::setLevel(LogLevel level) {
   this->level = level;

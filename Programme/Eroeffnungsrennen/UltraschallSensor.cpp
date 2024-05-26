@@ -10,7 +10,7 @@ void UltraschallSensor::init(void) {
   pinMode(RIGHT_TRIG_PIN, OUTPUT);
   pinMode(RIGHT_ECHO_PIN, INPUT);
 
-  logger.debug("[ULTRA] Initialized");
+  logger.debug("[IR]    Initialized");
 }
 
 int UltraschallSensor::getDistance(side side) {
@@ -18,15 +18,15 @@ int UltraschallSensor::getDistance(side side) {
   switch (side) {
     case side::left:
       distance = getUltrasonicData(LEFT_TRIG_PIN, LEFT_ECHO_PIN);
-      logger.debug(("[ULTRA] left distance: " + String(distance) + "cm").c_str());
+      logger.debug(("[IR]    left distance: " + String(distance) + "cm").c_str());
       return distance;
     case side::front:
       distance = getUltrasonicData(FRONT_TRIG_PIN, FRONT_ECHO_PIN);
-      logger.debug(("[ULTRA] front distance: " + String(distance) + "cm").c_str());
+      logger.debug(("[IR]    front distance: " + String(distance) + "cm").c_str());
       return distance;
     case side::right:
       distance = getUltrasonicData(RIGHT_TRIG_PIN, RIGHT_ECHO_PIN);
-      logger.debug(("[ULTRA] right distance: " + String(distance) + "cm").c_str());
+      logger.debug(("[IR]    right distance: " + String(distance) + "cm").c_str());
       return distance;
   }
 }

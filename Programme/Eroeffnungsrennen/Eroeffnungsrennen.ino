@@ -6,7 +6,7 @@
 #define BUTTON_PIN 1
 
 void initSerial() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   while (!Serial);
   Serial.println();
   Serial.println("----Start----");
@@ -20,23 +20,23 @@ void wait() {
 }
 
 void run() {
-  while (ir.getDistance(side::front) > ir.getDistance(side::left) && ir.getDistance(side::front) > ir.getDistance(side::right)) {
-    motor.run(75);
-    if (ir.getDistance(side::left) < ir.getDistance(side::right)) {
-      //steer right
-      servo.set(-42);
-    }
-    if (ir.getDistance(side::right) < ir.getDistance(side::left)) {
-      //steer left
-      servo.set(42);
-    }
+  motor.run(100);
+
+  if (ir.getDistance(side::left) < ir.getDistance(side::right)) {
+    servo.set(-42);
+  }
+
+  if (ir.getDistance(side::left) > ir.getDistance(side::right)) {
+    servo.set(42);
+  }
+
+  if (ir.getDistance(side::front) < ir.getDistance(side::right)) {
+    servo.set(-84);
   }
   
+
   if (ir.getDistance(side::front) < ir.getDistance(side::left)) {
-    //turn left
-  }
-  if (ir.getDistance(side::front) < ir.getDistance(side::right)) {
-    //turn right
+    servo.set(84);
   }
 }
 
@@ -44,11 +44,12 @@ void setup() {
   initSerial();
   logger.setLevel(LogLevel::DEBUG);
   motor.init();
+  mpu.init();
   servo.init();
   ir.init();
   servo.set(0);
 }
 
 void loop() {
-  
+
 }
