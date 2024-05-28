@@ -1,5 +1,6 @@
 #include "Logger.h"
 #include "MotorController.h"
+#include "MPU.h"
 #include "ServoController.h"
 #include "UltraschallSensor.h"
 
@@ -42,7 +43,7 @@ void run() {
 
 void setup() {
   initSerial();
-  logger.setLevel(LogLevel::DEBUG);
+  logger.init(LogLevel::INFO);
   motor.init();
   mpu.init();
   servo.init();
@@ -51,5 +52,7 @@ void setup() {
 }
 
 void loop() {
-
+  mpu.readRawData();
+  mpu.calculateAngle();
+  delay(1000);
 }

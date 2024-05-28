@@ -1,11 +1,13 @@
 #include "ServoController.h"
 
+ServoController servo;
+
 void ServoController::init(void) {
   pinMode(SERVO_ENL_PIN, OUTPUT);
   pinMode(SERVO_IN1_PIN, OUTPUT);
   pinMode(SERVO_IN2_PIN, OUTPUT);
 
-  logger.debug("[Servo] Initialized");
+  logger.info("[Servo]  Initialized");
 }
 
 void ServoController::set(int value) {
@@ -21,9 +23,9 @@ void ServoController::set(int value) {
 
   if (value >= -100 && value <= 100) {
     analogWrite(SERVO_ENL_PIN, int(abs(value)*2.55));
-    logger.info(("[Servo] Value: " + String(value) + "%").c_str());
+    logger.debug(("[Servo]  Value: " + String(value) + "%").c_str());
   } else {
-    logger.error("[Servo] Value must be between -100 and 100");
+    logger.error("[Servo]  Value must be between -100 and 100");
   }
 }
 
@@ -45,5 +47,3 @@ void ServoController::test(void) {
   logger.debug("--------");
   logger.setLevel(level);
 }
-
-ServoController servo;

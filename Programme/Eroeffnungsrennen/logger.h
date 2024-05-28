@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 enum class LogLevel {
+  TRACE,
   DEBUG,
   INFO,
   WARN,
@@ -13,8 +14,10 @@ enum class LogLevel {
 
 class Logger {
   public:
+    void init(LogLevel level);
     void setLevel(LogLevel level);
     LogLevel getLevel(void);
+    void trace(const char* message);
     void debug(const char* message);
     void info(const char* message);
     void warn(const char* message);
