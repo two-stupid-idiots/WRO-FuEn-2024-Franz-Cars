@@ -1,3 +1,4 @@
+#include "ColorSensor.h"
 #include "Logger.h"
 #include "MotorController.h"
 #include "MPU.h"
@@ -44,6 +45,7 @@ void run() {
 void setup() {
   initSerial();
   logger.init(LogLevel::INFO);
+  color.init();
   motor.init();
   mpu.init();
   servo.init();
@@ -52,7 +54,5 @@ void setup() {
 }
 
 void loop() {
-  mpu.readRawData();
-  mpu.calculateAngle();
-  delay(1000);
+  color.test();
 }

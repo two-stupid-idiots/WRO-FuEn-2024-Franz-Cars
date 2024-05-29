@@ -11,9 +11,9 @@ class MotorController {
     void test(void);
 
   private:
-    #define MOTOR_ENL_PIN 6
+    #define MOTOR_ENL_PIN 8
     #define MOTOR_IN1_PIN 7
-    #define MOTOR_IN2_PIN 8
+    #define MOTOR_IN2_PIN 6
 };
 
 extern MotorController motor;
