@@ -23,7 +23,7 @@ void ServoController::set(int value) {
 
   if (value >= -100 && value <= 100) {
     analogWrite(SERVO_ENL_PIN, int(abs(value)*2.55));
-    logger.debug(("[Servo]  Value: " + String(value) + "%").c_str());
+    logger.trace(("[Servo]  Value: " + String(value) + "%").c_str());
   } else {
     logger.error("[Servo]  Value must be between -100 and 100");
   }

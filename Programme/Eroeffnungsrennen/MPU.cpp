@@ -114,13 +114,12 @@ void MPU::calculateAngle(void) {
 
   roll = atan2(accY, accZ) * 180 / PI;
   pitch = atan(-accX / sqrt(accY * accY + accZ * accZ)) * 180 / PI;
-  //yaw = (0.1 * (gyroZ * deltaTime) + (1 - 0.1) * yaw) * 1.1;
+  yaw = (0.1 * (gyroZ * deltaTime) + (1 - 0.1) * yaw) * 1.1;
 
-  if (gyroZ > 1 || gyroZ < -1) {
+  /*if (gyroZ > 1 || gyroZ < -1) {
     yaw = (0.1 * (gyroZ * deltaTime) + (1 - 0.1) * yaw);
-  }
+  }*/
   
-
   float alpha = 0.98;
   roll = alpha * (roll + gyroX * deltaTime) + (1 - alpha) * roll;
   pitch = alpha * (pitch + gyroY * deltaTime) + (1 - alpha) * pitch;

@@ -23,7 +23,7 @@ void MotorController::run(int speed) {
 
   if (speed >= -100 && speed <= 100) {
     analogWrite(MOTOR_ENL_PIN, int(abs(speed)*2.55));
-    logger.debug(("[Motor]  Speed: " + String(speed) + "%").c_str());
+    logger.trace(("[Motor]  Speed: " + String(speed) + "%").c_str());
   } else {
     logger.error("[Motor]  Speed must be between -100 and 100");
   }
