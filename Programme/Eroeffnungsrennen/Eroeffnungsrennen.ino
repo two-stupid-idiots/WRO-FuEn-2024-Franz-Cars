@@ -5,7 +5,11 @@
 #include "ServoController.h"
 #include "UltraschallSensor.h"
 
-#define BUTTON_PIN 1
+#define ORANGE_PIN 34
+#define BLUE_PIN 36
+#define WHITE_PIN 38
+#define GREEN_PIN 40
+#define BUTTON_PIN 32
 dir direction;
 
 void initSerial() {
@@ -20,9 +24,14 @@ void wait() {
   while (digitalRead(BUTTON_PIN) == HIGH) {
     delay(100);
   }
+  digitalWrite(GREEN_PIN, HIGH);
 }
 
 void start() {
+  pinMode(ORANGE_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
+  pinMode(WHITE_PIN, OUTPUT);
+
   direction = color.isLine();
   while (direction == dir::null) {
     motor.run(70);
@@ -30,15 +39,18 @@ void start() {
   }
   motor.run(0);
   if (direction == dir::right) {
+    digitalWrite(ORANGE_PIN, HIGH);
     logger.debug("[START]  Direction: right");
   }
   if (direction == dir::left) {
+    digitalWrite(BLUE_PIN, HIGH);
     logger.debug("[START]  Direction: left");
   }
 }
  
 void run() {
   motor.run(70);
+  digitalWrite(WHITE_PIN, HIGH);
  
   if (ir.getDistance(side::left) < ir.getDistance(side::right)) {
     servo.set(-70);
@@ -47,6 +59,8 @@ void run() {
   if (ir.getDistance(side::left) > ir.getDistance(side::right)) {
     servo.set(42);
   }
+
+  digitalWrite(WHITE_PIN, LOW);
 
   if (direction == dir::right && ir.getDistance(side::front) < ir.getDistance(side::right) && ir.getDistance(side::left) < ir.getDistance(side::right)) {
     servo.set(-42);
@@ -66,12 +80,11 @@ void setup() {
   servo.init();
   ir.init();
   servo.set(0);
+  wait();
   //start();
   //color.startCalibrate();
 }
 
 void loop() {
   //run();
-  //servo.test();
-  ir.test();
 }
