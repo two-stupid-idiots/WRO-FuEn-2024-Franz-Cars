@@ -18,7 +18,7 @@ class ColorSensor {
     int getBlueFrequency(void);
     int getNoFilter(void);
     void test(void);
-    void calibrate(void);
+    void startCalibrate(void);
     dir isLine(void); 
   private:
     #define S0 28
@@ -27,8 +27,16 @@ class ColorSensor {
     #define S3 26
     #define OUT 22
     long calibrate_raw[4];
+    long calibrate_orange_raw[4][4];
+    long calibrate_blue_raw[4][4];
 
     int calibrate_off[4];
+    int calibrate_orange_off[4][4];
+    int calibrate_blue_off[4][4];
+
+    int orange_raw[4];
+    int blue_raw[4];
+    
     int orange_off[4] = {61, 79, 64, 22};
     int blue_off[4] = {170, 119, 58, 29};
 
@@ -40,6 +48,8 @@ class ColorSensor {
     int blue_low[4];
 
     int now[4];
+
+    void calibrate(char mode, int corners, int runtime);
 };
 
 extern ColorSensor color;

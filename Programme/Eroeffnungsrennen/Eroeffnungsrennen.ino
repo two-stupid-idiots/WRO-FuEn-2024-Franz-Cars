@@ -30,10 +30,10 @@ void start() {
   }
   motor.run(0);
   if (direction == dir::right) {
-    logger.debug("Direction: right");
+    logger.debug("[START]  Direction: right");
   }
   if (direction == dir::left) {
-    logger.debug("Direction: left");
+    logger.debug("[START]  Direction: left");
   }
   delay(1000);
 }
@@ -68,10 +68,10 @@ void setup() {
   ir.init();
   servo.set(0);
   //start();
-  color.calibrate();
+  //color.startCalibrate();
 }
 
 void loop() {
-  // run();
+  //run();
   //color.test();
 }
