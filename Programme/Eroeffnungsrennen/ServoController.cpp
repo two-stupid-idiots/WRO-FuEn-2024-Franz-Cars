@@ -31,12 +31,12 @@ void ServoController::set(int value) {
 
 void ServoController::test(void) {
   LogLevel level = logger.getLevel();
-  logger.setLevel(LogLevel::DEBUG);
+  logger.setLevel(LogLevel::TRACE);
   for (int i = 0; i <= 98; i += 14) {
     set(i);
     delay(1000);
   }
-  for (int i = 98; i >= -98; i += -14) {
+  for (int i = 98; i >= 0; i += -14) {
     set(i);
     delay(1000);
   }

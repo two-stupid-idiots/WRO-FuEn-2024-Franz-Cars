@@ -25,7 +25,7 @@ void wait() {
 void start() {
   direction = color.isLine();
   while (direction == dir::null) {
-    motor.run(80);
+    motor.run(70);
     direction = color.isLine();
   }
   motor.run(0);
@@ -35,26 +35,25 @@ void start() {
   if (direction == dir::left) {
     logger.debug("[START]  Direction: left");
   }
-  delay(1000);
 }
-
+ 
 void run() {
-  motor.run(80);
-
+  motor.run(70);
+ 
   if (ir.getDistance(side::left) < ir.getDistance(side::right)) {
-    servo.set(-42);
+    servo.set(-70);
   }
 
   if (ir.getDistance(side::left) > ir.getDistance(side::right)) {
     servo.set(42);
   }
 
-  if (direction == dir::right && ir.getDistance(side::front) < ir.getDistance(side::right)) {
-    servo.set(-84);
+  if (direction == dir::right && ir.getDistance(side::front) < ir.getDistance(side::right) && ir.getDistance(side::left) < ir.getDistance(side::right)) {
+    servo.set(-42);
   }
 
-  if (direction == dir::left && ir.getDistance(side::front) < ir.getDistance(side::left)) {
-    servo.set(84);
+  if (direction == dir::left && ir.getDistance(side::front) < ir.getDistance(side::left) && ir.getDistance(side::right) < ir.getDistance(side::left)) {
+    servo.set(70);
   }
 }
 
@@ -73,5 +72,6 @@ void setup() {
 
 void loop() {
   //run();
-  //color.test();
+  //servo.test();
+  ir.test();
 }
