@@ -36,7 +36,7 @@ void ServoController::test(void) {
     set(i);
     delay(1000);
   }
-  for (int i = 98; i >= 0; i += -14) {
+  for (int i = 98; i >= -98; i += -14) {
     set(i);
     delay(1000);
   }

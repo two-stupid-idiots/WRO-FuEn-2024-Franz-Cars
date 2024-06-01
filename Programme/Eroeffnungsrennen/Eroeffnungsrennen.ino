@@ -10,6 +10,7 @@
 #define WHITE_PIN 38
 #define GREEN_PIN 40
 #define BUTTON_PIN 32
+boolean isWhiteLed;
 dir direction;
 
 void initSerial() {
@@ -46,28 +47,31 @@ void start() {
     digitalWrite(BLUE_PIN, HIGH);
     logger.debug("[START]  Direction: left");
   }
+  delay(1000);
 }
  
 void run() {
   motor.run(70);
-  digitalWrite(WHITE_PIN, HIGH);
+  if (isWhiteLed) {
+    digitalWrite(WHITE_PIN, LOW);
+  } else {
+    digitalWrite(WHITE_PIN, HIGH);
+  }
  
   if (ir.getDistance(side::left) < ir.getDistance(side::right)) {
-    servo.set(-70);
+    servo.set(-24);
   }
 
   if (ir.getDistance(side::left) > ir.getDistance(side::right)) {
-    servo.set(42);
+    servo.set(38);
   }
 
-  digitalWrite(WHITE_PIN, LOW);
-
   if (direction == dir::right && ir.getDistance(side::front) < ir.getDistance(side::right) && ir.getDistance(side::left) < ir.getDistance(side::right)) {
-    servo.set(-42);
+    servo.set(-84);
   }
 
   if (direction == dir::left && ir.getDistance(side::front) < ir.getDistance(side::left) && ir.getDistance(side::right) < ir.getDistance(side::left)) {
-    servo.set(70);
+    servo.set(84);
   }
 }
 
@@ -81,10 +85,11 @@ void setup() {
   ir.init();
   servo.set(0);
   wait();
-  //start();
+  start();
   //color.startCalibrate();
 }
 
 void loop() {
-  //run();
+  run();
+  //ir.test();
 }
