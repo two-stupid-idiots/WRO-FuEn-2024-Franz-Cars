@@ -43,26 +43,46 @@ void start() {
     digitalWrite(ORANGE_PIN, HIGH);
     logger.debug("[START]  Direction: right");
     servo.set(-70);
+    motor.run(50);
+    delay(1000);
+    servo.set(-84);
+    motor.run(50);
+    delay(1000);
   }
   if (direction == dir::left) {
     digitalWrite(BLUE_PIN, HIGH);
     logger.debug("[START]  Direction: left");
     servo.set(70);
+    motor.run(50);
+    delay(1000);
+    servo.set(84);
+    motor.run(50);
+    delay(1000);
   }
-  motor.run(70);
-  delay(2750);
   motor.run(0);
   servo.set(0);
 }
  
 void run() {
-  motor.run(70);
+  motor.run(50);
   if (isWhiteLed) {
     digitalWrite(WHITE_PIN, LOW);
   } else {
     digitalWrite(WHITE_PIN, HIGH);
   }
  
+  if (ir.getDistance(side::front) < 15) {
+    motor.run(-50);
+    if (direction == dir::right) {
+      servo.set(38);
+    } else {
+      servo.set(-38);
+    }
+    delay(1000);
+    motor.run(50);
+  }
+  
+
   if (ir.getDistance(side::left) < ir.getDistance(side::right)) {
     servo.set(-24);
   }
@@ -96,5 +116,4 @@ void setup() {
 
 void loop() {
   run();
-  //ir.test();
 }
