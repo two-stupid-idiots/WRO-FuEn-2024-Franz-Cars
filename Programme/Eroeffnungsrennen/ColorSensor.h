@@ -37,8 +37,8 @@ class ColorSensor {
     int orange_raw[4];
     int blue_raw[4];
     
-    int orange_off[4] = {23, 31, 24, 9};
-    int blue_off[4] = {54, 43, 23, 12};
+    int orange_off[4] = {20, 34, 28, 9};
+    int blue_off[4] = {39, 36, 20, 10};
 
     int calibrate_up[4];
     int calibrate_low[4];

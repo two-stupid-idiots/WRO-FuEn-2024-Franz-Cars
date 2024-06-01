@@ -42,12 +42,17 @@ void start() {
   if (direction == dir::right) {
     digitalWrite(ORANGE_PIN, HIGH);
     logger.debug("[START]  Direction: right");
+    servo.set(-70);
   }
   if (direction == dir::left) {
     digitalWrite(BLUE_PIN, HIGH);
     logger.debug("[START]  Direction: left");
+    servo.set(70);
   }
-  delay(1000);
+  motor.run(70);
+  delay(2750);
+  motor.run(0);
+  servo.set(0);
 }
  
 void run() {
@@ -77,7 +82,7 @@ void run() {
 
 void setup() {
   initSerial();
-  logger.init(LogLevel::DEBUG);
+  logger.init(LogLevel::INFO);
   color.init();
   motor.init();
   //mpu.init();
